@@ -1,465 +1,570 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" class="cyber-dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Piyush Rajan — Premium Developer Portfolio</title>
-    
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Portfolio of Piyush Rajan — Computer Science Engineering Student at Manipal University Jaipur, Dean's List holder, Competitive Programmer, and Full-Stack MERN Developer specializing in GenAI and high-scale applications.">
-    <meta name="keywords" content="Piyush Rajan, Developer Portfolio, Manipal University Jaipur, Full-Stack Engineer, Competitive Programming, MERN Stack, AI Co-Founder Platform, India">
-    <meta name="author" content="Piyush Rajan">
-    <meta name="robots" content="index, follow">
-    
+    <meta
+      name="description"
+      content="Portfolio of Piyush Rajan — Computer Science Engineering Student at Manipal University Jaipur, Dean's List holder, Competitive Programmer, and Full-Stack MERN Developer specializing in GenAI and high-scale applications."
+    />
+    <meta
+      name="keywords"
+      content="Piyush Rajan, Developer Portfolio, Manipal University Jaipur, Full-Stack Engineer, Competitive Programming, MERN Stack, AI Co-Founder Platform, India"
+    />
+    <meta name="author" content="Piyush Rajan" />
+    <meta name="robots" content="index, follow" />
+
     <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://github.com/PiyushRajan2007">
-    <meta property="og:title" content="Piyush Rajan — Premium Developer Portfolio">
-    <meta property="og:description" content="Computer Science student at MUJ, CGPA 9.48. Building production-grade MERN stacks, competitive programming, and preparing for GSoC 2027.">
-    <meta property="og:image" content="https://raw.githubusercontent.com/PiyushRajan2007/portfolio/main/preview.png">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://github.com/PiyushRajan2007" />
+    <meta
+      property="og:title"
+      content="Piyush Rajan — Premium Developer Portfolio"
+    />
+    <meta
+      property="og:description"
+      content="Computer Science student at MUJ, CGPA 9.48. Building production-grade MERN stacks, competitive programming, and preparing for GSoC 2027."
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/PiyushRajan2007/portfolio/main/preview.png"
+    />
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- External CSS -->
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
     <!-- Interactive Background Particles -->
     <canvas id="particles-canvas"></canvas>
 
     <!-- Theme Toggle Floating Action Button -->
-    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme" title="Switch Theme Mode">🌙</button>
- 
+    <button
+      class="theme-toggle"
+      id="themeToggle"
+      aria-label="Toggle Theme"
+      title="Switch Theme Mode"
+    >
+      🌙
+    </button>
+
     <!-- Premium Glass Header Navigation -->
     <header>
-        <div class="logo">PR<span>.dev</span></div>
-        <nav aria-label="Primary Navigation">
-            <a href="#about" class="nav-link">About</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#work" class="nav-link">Work</a>
-            <a href="#proof" class="nav-link">Proof</a>
-            <a href="#now" class="nav-link">Now</a>
-            <a href="#contact" class="nav-link">Contact</a>
-        </nav>
-        <button class="mobile-nav-toggle" aria-label="Toggle Menu">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+      <div class="logo">PR<span>.dev</span></div>
+      <nav aria-label="Primary Navigation">
+        <a href="#about" class="nav-link">About</a>
+        <a href="#skills" class="nav-link">Skills</a>
+        <a href="#work" class="nav-link">Work</a>
+        <a href="#proof" class="nav-link">Proof</a>
+        <a href="#now" class="nav-link">Now</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </nav>
+      <button class="mobile-nav-toggle" aria-label="Toggle Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </header>
 
     <!-- Mobile Dropdown Navigation -->
     <div class="mobile-nav-dropdown">
-        <a href="#about" class="mobile-nav-link">About</a>
-        <a href="#skills" class="mobile-nav-link">Skills</a>
-        <a href="#work" class="mobile-nav-link">Work</a>
-        <a href="#proof" class="mobile-nav-link">Proof</a>
-        <a href="#now" class="mobile-nav-link">Now</a>
-        <a href="#contact" class="mobile-nav-link">Contact</a>
+      <a href="#about" class="mobile-nav-link">About</a>
+      <a href="#skills" class="mobile-nav-link">Skills</a>
+      <a href="#work" class="mobile-nav-link">Work</a>
+      <a href="#proof" class="mobile-nav-link">Proof</a>
+      <a href="#now" class="mobile-nav-link">Now</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
     </div>
- 
+
     <main class="container">
-        <!-- Hero Section -->
-        <section class="hero reveal" id="hero">
-            <div class="hero-meta">
-                <span class="meta-item animate-shimmer">Open to Internships</span>
-                <span class="meta-item animate-shimmer">SDE / Full-Stack Roles</span>
-                <span class="meta-item animate-shimmer">Batch of 2026+</span>
-            </div>
- 
-            <h1>Piyush Rajan</h1>
-            <p class="subtitle">
-                <span class="typewriter-prefix">I am a </span><span id="typewriter-text" data-words='["Full-Stack Engineer.", "Competitive Programmer.", "Open-Source Contributor."]'></span><span class="typewriter-cursor">|</span>
+      <!-- Hero Section -->
+      <section class="hero reveal" id="hero">
+        <div class="hero-meta">
+          <span class="meta-item animate-shimmer">Open to Internships</span>
+          <span class="meta-item animate-shimmer">SDE / Full-Stack Roles</span>
+          <span class="meta-item animate-shimmer">Batch of 2026+</span>
+        </div>
+
+        <h1>Piyush Rajan</h1>
+        <p class="subtitle">
+          <span class="typewriter-prefix">I am a </span
+          ><span
+            id="typewriter-text"
+            data-words='["Full-Stack Engineer.", "Competitive Programmer.", "Open-Source Contributor."]'
+          ></span
+          ><span class="typewriter-cursor">|</span>
+        </p>
+
+        <p class="hero-paragraph">
+          I design, architect, and ship high-performance full-stack systems —
+          from multi-agent GenAI platforms to creator economy campaigns. Dean's
+          List scholar at MUJ ·
+          <strong>1st Yr CGPA 9.48 (Sem 2 GPA 9.71)</strong> · Actively prepping
+          for GSoC 2027.
+        </p>
+
+        <div class="cta-buttons">
+          <a href="#work" class="btn btn-primary"
+            >View My Work <span class="arrow">→</span></a
+          >
+          <a href="#contact" class="btn btn-secondary">Start a Conversation</a>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="reveal">
+        <h2>About Me</h2>
+        <div class="section-intro">
+          <p>
+            I'm a <strong>Computer Science Engineering</strong> student at
+            Manipal University Jaipur (MUJ) — currently ranked on the Dean's
+            List with a <strong>1st Year CGPA of 9.48</strong>. I build
+            production-grade full-stack systems and solve complex algorithmic
+            problems, with a bias toward shipping things that work at scale.
+          </p>
+          <p>
+            My technical foundation is rooted in
+            <strong>C/C++ and rigorous DSA</strong>. I've extended that into the
+            full MERN stack, shipping everything from AI multi-agent platforms
+            to influencer campaign infrastructure. Every project starts with a
+            problem worth solving — and ends with clean, deployable code.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <article class="about-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>🎓 University</h4>
+            <p>
+              Manipal University Jaipur (MUJ)<br /><strong
+                >B.Tech CSE · 2025–2029</strong
+              >
             </p>
- 
-            <p class="hero-paragraph">
-                I design, architect, and ship high-performance full-stack systems — from multi-agent GenAI platforms to creator economy campaigns. Dean's List scholar at MUJ · <strong>1st Yr CGPA 9.48 (Sem 2 GPA 9.71)</strong> · Actively prepping for GSoC 2027.
+          </article>
+          <article class="about-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>📊 Academic Standing</h4>
+            <p>
+              <strong>1st Year CGPA: 9.48</strong><br />
+              <span class="highlight-lime">Sem 2 GPA: 9.71</span><br />
+              🏅 Dean's List Certificate
             </p>
- 
-            <div class="cta-buttons">
-                <a href="#work" class="btn btn-primary">View My Work <span class="arrow">→</span></a>
-                <a href="#contact" class="btn btn-secondary">Start a Conversation</a>
-            </div>
-        </section>
- 
-        <!-- About Section -->
-        <section id="about" class="reveal">
-            <h2>About Me</h2>
-            <div class="section-intro">
-                <p>
-                    I'm a <strong>Computer Science Engineering</strong> student at Manipal University Jaipur (MUJ) — currently ranked on the Dean's List with a 
-                    <strong>1st Year CGPA of 9.48</strong>. I build production-grade full-stack systems and solve complex algorithmic problems, 
-                    with a bias toward shipping things that work at scale.
-                </p>
-                <p>
-                    My technical foundation is rooted in <strong>C/C++ and rigorous DSA</strong>. I've extended that into the full MERN stack, 
-                    shipping everything from AI multi-agent platforms to influencer campaign infrastructure. Every project starts with a problem 
-                    worth solving — and ends with clean, deployable code.
-                </p>
-            </div>
- 
-            <div class="about-grid">
-                <article class="about-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>🎓 University</h4>
-                    <p>Manipal University Jaipur (MUJ)<br><strong>B.Tech CSE · 2025–2029</strong></p>
-                </article>
-                <article class="about-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>📊 Academic Standing</h4>
-                    <p>
-                        <strong>1st Year CGPA: 9.48</strong><br>
-                        <span class="highlight-lime">Sem 2 GPA: 9.71</span><br>
-                        🏅 Dean's List Certificate
-                    </p>
-                </article>
-                <article class="about-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>📞 Contact</h4>
-                    <p>
-                        <a href="mailto:piyushrajan2007@gmail.com" class="link-cyan">piyushrajan2007@gmail.com</a><br>
-                        <a href="tel:+917041214608" class="link-pink">+91 7041 214 608</a>
-                    </p>
-                </article>
-            </div>
-        </section>
- 
-        <!-- Skills Section -->
-        <section id="skills" class="reveal">
-            <h2>Technical Skills</h2>
-            <div class="skills-grid">
-                <article class="skill-group glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>⌨️ Languages</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">C</span>
-                        <span class="skill-tag">C++</span>
-                        <span class="skill-tag">JavaScript</span>
-                        <span class="skill-tag">HTML5</span>
-                        <span class="skill-tag">CSS3</span>
-                    </div>
-                </article>
- 
-                <article class="skill-group glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>🖥️ Frontend</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">React</span>
-                        <span class="skill-tag">Next.js</span>
-                        <span class="skill-tag">Tailwind CSS</span>
-                        <span class="skill-tag">Chart.js</span>
-                    </div>
-                </article>
- 
-                <article class="skill-group glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>⚙️ Backend</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Node.js</span>
-                        <span class="skill-tag">Express.js</span>
-                        <span class="skill-tag">MongoDB</span>
-                        <span class="skill-tag">REST APIs</span>
-                    </div>
-                </article>
- 
-                <article class="skill-group glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <h4>🔧 Tools & Core</h4>
-                    <div class="skills-list">
-                        <span class="skill-tag">Git</span>
-                        <span class="skill-tag">GitHub</span>
-                        <span class="skill-tag">VS Code</span>
-                        <span class="skill-tag">DSA</span>
-                        <span class="skill-tag">OOP</span>
-                    </div>
-                </article>
-            </div>
-        </section>
- 
-        <!-- Work Section -->
-        <section id="work" class="reveal">
-            <h2>Engineering Work</h2>
-            <p class="section-subtitle">
-                Production-grade systems shipped under hackathon pressure and independent research — real code, real problems, real constraints.
+          </article>
+          <article class="about-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>📞 Contact</h4>
+            <p>
+              <a href="mailto:piyushrajan2007@gmail.com" class="link-cyan"
+                >piyushrajan2007@gmail.com</a
+              ><br />
+              <a href="tel:+917041214608" class="link-pink">+91 7041 214 608</a>
             </p>
- 
-            <div class="projects-grid">
-                <!-- Project 1 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">AI Co-Founder Platform</h3>
-                        <span class="project-badge">Featured · GenAI · SaaS</span>
-                    </div>
- 
-                    <p class="project-desc">
-                        Designed and shipped a multi-agent GenAI SaaS platform targeting 30M+ early-stage founders across India, SE Asia, and Africa 
-                        — delivering co-founder-grade business intelligence through three specialized AI agents working in concert.
-                    </p>
- 
-                    <div class="project-problem-solution">
-                        <p><strong>Problem:</strong> Indian startup founders lack affordable, high-quality technical and business validation tools.</p>
-                        <p><strong>Solution:</strong> Three-agent architecture (Technical, Business, Market) with RAG pipelines for Lean Canvas validation, MVP planning, and pitch simulation — reducing founder decision cycles by an estimated 60%.</p>
-                    </div>
- 
-                    <div class="project-tech">
-                        <span class="tech-tag">GPT-4</span>
-                        <span class="tech-tag">Llama-3</span>
-                        <span class="tech-tag">RAG</span>
-                        <span class="tech-tag">Vector DB</span>
-                        <span class="tech-tag">Multi-Agent</span>
-                        <span class="tech-tag">Cloud-Native</span>
-                    </div>
-                </article>
- 
-                <!-- Project 2 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">InfluenceIQ</h3>
-                        <span class="project-badge">Hackathon · Full-Stack</span>
-                    </div>
- 
-                    <p class="project-desc">
-                        A creator authenticity and influencer campaign management platform that replaces gut-feel influencer selection 
-                        with data-driven authenticity scoring — giving brand managers a measurable signal on creator credibility.
-                    </p>
- 
-                    <div class="project-problem-solution">
-                        <p><strong>Problem:</strong> Brands lose significant ROI to fake engagement metrics and unvetted influencer partnerships.</p>
-                        <p><strong>Solution:</strong> Search-based creator discovery with real-time authenticity scoring (94.2% accuracy), campaign management dashboard, and blockchain escrow payment flow — ensuring funds release only on verified deliverables.</p>
-                    </div>
- 
-                    <div class="project-tech">
-                        <span class="tech-tag">React</span>
-                        <span class="tech-tag">Next.js</span>
-                        <span class="tech-tag">Tailwind CSS</span>
-                        <span class="tech-tag">Chart.js</span>
-                        <span class="tech-tag">Blockchain</span>
-                    </div>
-                </article>
- 
-                <!-- Project 3 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">Student Record System</h3>
-                        <span class="project-badge">C++</span>
-                    </div>
-                    <p class="project-desc">
-                        Persistent CRUD engine handling 1,000+ concurrent records with zero data loss. Console-based data management system 
-                        built with C++ using file I/O and OOP architecture.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">C++</span>
-                        <span class="tech-tag">File I/O</span>
-                        <span class="tech-tag">OOP</span>
-                    </div>
-                </article>
- 
-                <!-- Project 4 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">To-Do App</h3>
-                        <span class="project-badge">JavaScript</span>
-                    </div>
-                    <p class="project-desc">
-                        Clean task management with zero-dependency vanilla JS architecture. Responsive task manager with add, complete, 
-                        and delete operations — built entirely with vanilla HTML/CSS/JS.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">HTML</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">JavaScript</span>
-                    </div>
-                </article>
- 
-                <!-- Project 5 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">Tic Tac Toe</h3>
-                        <span class="project-badge">JavaScript</span>
-                    </div>
-                    <p class="project-desc">
-                        Two-player game engine with complete win detection logic and smooth animated UI. Engineered to master event-driven 
-                        programming, state transitions, and DOM manipulation.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">CSS</span>
-                        <span class="tech-tag">Game Logic</span>
-                    </div>
-                </article>
- 
-                <!-- Project 6 -->
-                <article class="project-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="project-header">
-                        <h3 class="project-title">Rock Paper Scissors</h3>
-                        <span class="project-badge">JavaScript</span>
-                    </div>
-                    <p class="project-desc">
-                        Classic game vs computer with stochastic AI moves, persistent score tracking, and a responsive interactive interface. 
-                        A clean exercise in randomization, conditional logic, and UI feedback patterns.
-                    </p>
-                    <div class="project-tech">
-                        <span class="tech-tag">JavaScript</span>
-                        <span class="tech-tag">DOM Logic</span>
-                        <span class="tech-tag">Game Engine</span>
-                    </div>
-                </article>
+          </article>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="reveal">
+        <h2>Technical Skills</h2>
+        <div class="skills-grid">
+          <article class="skill-group glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>⌨️ Languages</h4>
+            <div class="skills-list">
+              <span class="skill-tag">C</span>
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">HTML5</span>
+              <span class="skill-tag">CSS3</span>
             </div>
-        </section>
- 
-        <!-- Proof Section -->
-        <section id="proof" class="reveal">
-            <h2>Proof of Work</h2>
-            <p class="section-subtitle">
-                Verifiable, consistent output — not just claims.
+          </article>
+
+          <article class="skill-group glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>🖥️ Frontend</h4>
+            <div class="skills-list">
+              <span class="skill-tag">React</span>
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">Tailwind CSS</span>
+              <span class="skill-tag">Chart.js</span>
+            </div>
+          </article>
+
+          <article class="skill-group glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>⚙️ Backend</h4>
+            <div class="skills-list">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Express.js</span>
+              <span class="skill-tag">MongoDB</span>
+              <span class="skill-tag">REST APIs</span>
+            </div>
+          </article>
+
+          <article class="skill-group glow-element">
+            <div class="card-glow-overlay"></div>
+            <h4>🔧 Tools & Core</h4>
+            <div class="skills-list">
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">GitHub</span>
+              <span class="skill-tag">VS Code</span>
+              <span class="skill-tag">DSA</span>
+              <span class="skill-tag">OOP</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Work Section -->
+      <section id="work" class="reveal">
+        <h2>Engineering Work</h2>
+        <p class="section-subtitle">
+          Production-grade systems shipped under hackathon pressure and
+          independent research — real code, real problems, real constraints.
+        </p>
+
+        <div class="projects-grid">
+          <!-- Project 1 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">AI Co-Founder Platform</h3>
+              <span class="project-badge">Featured · GenAI · SaaS</span>
+            </div>
+
+            <p class="project-desc">
+              Designed and shipped a multi-agent GenAI SaaS platform targeting
+              30M+ early-stage founders across India, SE Asia, and Africa —
+              delivering co-founder-grade business intelligence through three
+              specialized AI agents working in concert.
             </p>
- 
-            <div class="achievements-container">
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">9.48</div>
-                    <div class="achievement-label">1st Year CGPA</div>
-                    <div class="achievement-subtext">Out of 10.0</div>
-                </div>
- 
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">9.71</div>
-                    <div class="achievement-label">Semester 2 GPA</div>
-                    <div class="achievement-subtext">Highest semester</div>
-                </div>
- 
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">🏅</div>
-                    <div class="achievement-label">Dean's List</div>
-                    <div class="achievement-subtext">Top performers 2025</div>
-                </div>
- 
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">100+</div>
-                    <div class="achievement-label">LeetCode Problems</div>
-                    <div class="achievement-subtext">C++ · DSA</div>
-                </div>
- 
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">7</div>
-                    <div class="achievement-label">GitHub Repos</div>
-                    <div class="achievement-subtext">Public Projects</div>
-                </div>
- 
-                <div class="achievement-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="achievement-number">2027</div>
-                    <div class="achievement-label">GSoC Target</div>
-                    <div class="achievement-subtext">Active preparation</div>
-                </div>
+
+            <div class="project-problem-solution">
+              <p>
+                <strong>Problem:</strong> Indian startup founders lack
+                affordable, high-quality technical and business validation
+                tools.
+              </p>
+              <p>
+                <strong>Solution:</strong> Three-agent architecture (Technical,
+                Business, Market) with RAG pipelines for Lean Canvas validation,
+                MVP planning, and pitch simulation — reducing founder decision
+                cycles by an estimated 60%.
+              </p>
             </div>
- 
-            <!-- LinkedIn Proof Box -->
-            <div class="linkedin-proof glow-element" id="proof-box">
-                <div class="card-glow-overlay"></div>
-                <p>
-                    <strong>🎓 Academic Achievement Verification</strong><br>
-                    View detailed proof of my academic standing, transcripts, and achievements verified on LinkedIn.
-                </p>
-                <a href="https://www.linkedin.com/posts/piyush-rajan-967a033a0_btech-cse-manipaluniversityjaipur-ugcPost-7464163172560650241-SZPp/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGJkkZ8Ba4szdFv6qFRKms7AJj4_05i2x5M" target="_blank" class="btn btn-primary" rel="noopener noreferrer">
-                    View LinkedIn Post →
-                </a>
+
+            <div class="project-tech">
+              <span class="tech-tag">GPT-4</span>
+              <span class="tech-tag">Llama-3</span>
+              <span class="tech-tag">RAG</span>
+              <span class="tech-tag">Vector DB</span>
+              <span class="tech-tag">Multi-Agent</span>
+              <span class="tech-tag">Cloud-Native</span>
             </div>
-        </section>
- 
-        <!-- Now Section -->
-        <section id="now" class="reveal">
-            <h2>Currently Working On</h2>
-            <p class="section-subtitle">
-                Active focus areas with measurable milestones — not passive interests.
+          </article>
+
+          <!-- Project 2 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">InfluenceIQ</h3>
+              <span class="project-badge">Hackathon · Full-Stack</span>
+            </div>
+
+            <p class="project-desc">
+              A creator authenticity and influencer campaign management platform
+              that replaces gut-feel influencer selection with data-driven
+              authenticity scoring — giving brand managers a measurable signal
+              on creator credibility.
             </p>
- 
-            <div class="now-grid">
-                <article class="now-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="now-emoji">🎯</div>
-                    <h4>GSoC 2027 Prep</h4>
-                    <p>
-                        Systematically identifying target orgs, making codebase contributions, and building a track record of 
-                        open-source PRs. Focus: Python/JS ecosystems with active GSoC participation.
-                    </p>
-                </article>
- 
-                <article class="now-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="now-emoji">🧠</div>
-                    <h4>DSA — 150+ Problems</h4>
-                    <p>
-                        100+ LeetCode problems solved in C++ — covering graphs, dynamic programming, and tree algorithms. 
-                        Pushing toward 200+ and a competitive rating before placement season.
-                    </p>
-                </article>
- 
-                <article class="now-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="now-emoji">🚀</div>
-                    <h4>MERN Stack Depth</h4>
-                    <p>
-                        Building production-grade APIs with Node.js/Express and architecting React applications with proper 
-                        state management — targeting internship-ready full-stack capability by mid-2026.
-                    </p>
-                </article>
- 
-                <article class="now-card glow-element">
-                    <div class="card-glow-overlay"></div>
-                    <div class="now-emoji">🤖</div>
-                    <h4>AI Integration Layer</h4>
-                    <p>
-                        Exploring LLM API integration patterns, RAG pipeline architecture, and multi-agent orchestration 
-                        frameworks — bridging application engineering with production-grade GenAI systems.
-                    </p>
-                </article>
+
+            <div class="project-problem-solution">
+              <p>
+                <strong>Problem:</strong> Brands lose significant ROI to fake
+                engagement metrics and unvetted influencer partnerships.
+              </p>
+              <p>
+                <strong>Solution:</strong> Search-based creator discovery with
+                real-time authenticity scoring (94.2% accuracy), campaign
+                management dashboard, and blockchain escrow payment flow —
+                ensuring funds release only on verified deliverables.
+              </p>
             </div>
-        </section>
- 
-        <!-- Contact Section -->
-        <section id="contact" class="contact-section reveal">
-            <h2>Let's Build Something</h2>
-            <p class="contact-lead">
-                If you're hiring for SDE internships, open to hackathon collaboration, or working on an open-source project 
-                that could use a dedicated contributor — I want to hear from you.
+
+            <div class="project-tech">
+              <span class="tech-tag">React</span>
+              <span class="tech-tag">Next.js</span>
+              <span class="tech-tag">Tailwind CSS</span>
+              <span class="tech-tag">Chart.js</span>
+              <span class="tech-tag">Blockchain</span>
+            </div>
+          </article>
+
+          <!-- Project 3 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">Student Record System</h3>
+              <span class="project-badge">C++</span>
+            </div>
+            <p class="project-desc">
+              Persistent CRUD engine handling 1,000+ concurrent records with
+              zero data loss. Console-based data management system built with
+              C++ using file I/O and OOP architecture.
             </p>
- 
-            <div class="contact-info">
-                <a href="mailto:piyushrajan2007@gmail.com" class="contact-link glow-button">
-                    <span class="icon">📧</span> piyushrajan2007@gmail.com
-                </a>
-                <a href="tel:+917041214608" class="contact-link glow-button">
-                    <span class="icon">📱</span> +91 7041 214 608
-                </a>
+            <div class="project-tech">
+              <span class="tech-tag">C++</span>
+              <span class="tech-tag">File I/O</span>
+              <span class="tech-tag">OOP</span>
             </div>
- 
-            <div class="social-links">
-                <a href="https://github.com/PiyushRajan2007" target="_blank" rel="noopener noreferrer">GitHub</a>
-                <a href="https://www.linkedin.com/in/piyush-rajan-967a033a0/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-                <a href="https://leetcode.com/u/PiyushRajan2007/" target="_blank" rel="noopener noreferrer">LeetCode</a>
+          </article>
+
+          <!-- Project 4 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">To-Do App</h3>
+              <span class="project-badge">JavaScript</span>
             </div>
-        </section>
+            <p class="project-desc">
+              Clean task management with zero-dependency vanilla JS
+              architecture. Responsive task manager with add, complete, and
+              delete operations — built entirely with vanilla HTML/CSS/JS.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">HTML</span>
+              <span class="tech-tag">CSS</span>
+              <span class="tech-tag">JavaScript</span>
+            </div>
+          </article>
+
+          <!-- Project 5 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">Tic Tac Toe</h3>
+              <span class="project-badge">JavaScript</span>
+            </div>
+            <p class="project-desc">
+              Two-player game engine with complete win detection logic and
+              smooth animated UI. Engineered to master event-driven programming,
+              state transitions, and DOM manipulation.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">CSS</span>
+              <span class="tech-tag">Game Logic</span>
+            </div>
+          </article>
+
+          <!-- Project 6 -->
+          <article class="project-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="project-header">
+              <h3 class="project-title">Rock Paper Scissors</h3>
+              <span class="project-badge">JavaScript</span>
+            </div>
+            <p class="project-desc">
+              Classic game vs computer with stochastic AI moves, persistent
+              score tracking, and a responsive interactive interface. A clean
+              exercise in randomization, conditional logic, and UI feedback
+              patterns.
+            </p>
+            <div class="project-tech">
+              <span class="tech-tag">JavaScript</span>
+              <span class="tech-tag">DOM Logic</span>
+              <span class="tech-tag">Game Engine</span>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- Proof Section -->
+      <section id="proof" class="reveal">
+        <h2>Proof of Work</h2>
+        <p class="section-subtitle">
+          Verifiable, consistent output — not just claims.
+        </p>
+
+        <div class="achievements-container">
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">9.48</div>
+            <div class="achievement-label">1st Year CGPA</div>
+            <div class="achievement-subtext">Out of 10.0</div>
+          </div>
+
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">9.71</div>
+            <div class="achievement-label">Semester 2 GPA</div>
+            <div class="achievement-subtext">Highest semester</div>
+          </div>
+
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">🏅</div>
+            <div class="achievement-label">Dean's List</div>
+            <div class="achievement-subtext">Top performers 2025</div>
+          </div>
+
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">100+</div>
+            <div class="achievement-label">LeetCode Problems</div>
+            <div class="achievement-subtext">C++ · DSA</div>
+          </div>
+
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">7</div>
+            <div class="achievement-label">GitHub Repos</div>
+            <div class="achievement-subtext">Public Projects</div>
+          </div>
+
+          <div class="achievement-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="achievement-number">2027</div>
+            <div class="achievement-label">GSoC Target</div>
+            <div class="achievement-subtext">Active preparation</div>
+          </div>
+        </div>
+
+        <!-- LinkedIn Proof Box -->
+        <div class="linkedin-proof glow-element" id="proof-box">
+          <div class="card-glow-overlay"></div>
+          <p>
+            <strong>🎓 Academic Achievement Verification</strong><br />
+            View detailed proof of my academic standing, transcripts, and
+            achievements verified on LinkedIn.
+          </p>
+          <a
+            href="https://www.linkedin.com/posts/piyush-rajan-967a033a0_btech-cse-manipaluniversityjaipur-ugcPost-7464163172560650241-SZPp/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAGJkkZ8Ba4szdFv6qFRKms7AJj4_05i2x5M"
+            target="_blank"
+            class="btn btn-primary"
+            rel="noopener noreferrer"
+          >
+            View LinkedIn Post →
+          </a>
+        </div>
+      </section>
+
+      <!-- Now Section -->
+      <section id="now" class="reveal">
+        <h2>Currently Working On</h2>
+        <p class="section-subtitle">
+          Active focus areas with measurable milestones — not passive interests.
+        </p>
+
+        <div class="now-grid">
+          <article class="now-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="now-emoji">🎯</div>
+            <h4>GSoC 2027 Prep</h4>
+            <p>
+              Systematically identifying target orgs, making codebase
+              contributions, and building a track record of open-source PRs.
+              Focus: Python/JS ecosystems with active GSoC participation.
+            </p>
+          </article>
+
+          <article class="now-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="now-emoji">🧠</div>
+            <h4>DSA — 150+ Problems</h4>
+            <p>
+              100+ LeetCode problems solved in C++ — covering graphs, dynamic
+              programming, and tree algorithms. Pushing toward 200+ and a
+              competitive rating before placement season.
+            </p>
+          </article>
+
+          <article class="now-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="now-emoji">🚀</div>
+            <h4>MERN Stack Depth</h4>
+            <p>
+              Building production-grade APIs with Node.js/Express and
+              architecting React applications with proper state management —
+              targeting internship-ready full-stack capability by mid-2026.
+            </p>
+          </article>
+
+          <article class="now-card glow-element">
+            <div class="card-glow-overlay"></div>
+            <div class="now-emoji">🤖</div>
+            <h4>AI Integration Layer</h4>
+            <p>
+              Exploring LLM API integration patterns, RAG pipeline architecture,
+              and multi-agent orchestration frameworks — bridging application
+              engineering with production-grade GenAI systems.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact-section reveal">
+        <h2>Let's Build Something</h2>
+        <p class="contact-lead">
+          If you're hiring for SDE internships, open to hackathon collaboration,
+          or working on an open-source project that could use a dedicated
+          contributor — I want to hear from you.
+        </p>
+
+        <div class="contact-info">
+          <a
+            href="mailto:piyushrajan2007@gmail.com"
+            class="contact-link glow-button"
+          >
+            <span class="icon">📧</span> piyushrajan2007@gmail.com
+          </a>
+          <a href="tel:+917041214608" class="contact-link glow-button">
+            <span class="icon">📱</span> +91 7041 214 608
+          </a>
+        </div>
+
+        <div class="social-links">
+          <a
+            href="https://github.com/PiyushRajan2007"
+            target="_blank"
+            rel="noopener noreferrer"
+            >GitHub</a
+          >
+          <a
+            href="https://www.linkedin.com/in/piyush-rajan-967a033a0/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LinkedIn</a
+          >
+          <a
+            href="https://leetcode.com/u/PiyushRajan2007/"
+            target="_blank"
+            rel="noopener noreferrer"
+            >LeetCode</a
+          >
+        </div>
+      </section>
     </main>
- 
+
     <footer>
-        <p>© 2025 Piyush Rajan · Architected with premium dark aesthetics · Manipal University Jaipur · B.Tech CSE 2025–29</p>
+      <p>
+        © 2025 Piyush Rajan · Architected with premium dark aesthetics · Manipal
+        University Jaipur · B.Tech CSE 2025–29
+      </p>
     </footer>
- 
+
     <!-- External JavaScript -->
     <script src="script.js"></script>
-</body>
+  </body>
 </html>
