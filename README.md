@@ -110,14 +110,7 @@ cd portfolio
 
 3. Open `index.html` in your browser or run using VS Code Live Server.
 
-## 🤝 Contributing
-
-Contributions, suggestions, and improvements are welcome. Feel free to fork the repository and submit a pull request.
 
 ## 📬 Contact
 
 If you'd like to connect, collaborate, or discuss opportunities, feel free to reach out through the contact section of the portfolio.
-
----
-
-⭐ If you found this project useful, consider giving it a star.
