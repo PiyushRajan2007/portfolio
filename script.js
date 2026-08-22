@@ -3,6 +3,7 @@
     "(prefers-reduced-motion: reduce)",
   ).matches;
   const canvas = document.querySelector("#scene-canvas");
+  let githubRequest;
 
   function initScene() {
     if (!canvas) return;
@@ -330,70 +331,165 @@
       }),
     );
   }
-  async function initGithub() {
+  const GITHUB_CACHE_KEY = "piyush-github-signal-v2";
+  const FEATURED_REPOSITORIES = [
+    "leetcode-solutions",
+    "Stone-Paper-Scissors",
+    "Jarvis2.0",
+  ];
+  function isValidProfile(profile) {
+    return (
+      profile &&
+      typeof profile === "object" &&
+      typeof profile.public_repos === "number" &&
+      Number.isFinite(profile.public_repos) &&
+      typeof profile.followers === "number" &&
+      Number.isFinite(profile.followers)
+    );
+  }
+  function isValidRepository(repo) {
+    return (
+      repo &&
+      typeof repo === "object" &&
+      typeof repo.name === "string" &&
+      typeof repo.html_url === "string" &&
+      /^https:\/\/github\.com\//.test(repo.html_url) &&
+      typeof repo.stargazers_count === "number" &&
+      typeof repo.forks_count === "number" &&
+      typeof repo.pushed_at === "string"
+    );
+  }
+  function normalizeGithubData(profile, repositories) {
+    if (
+      !isValidProfile(profile) ||
+      !Array.isArray(repositories) ||
+      repositories.some((repo) => !isValidRepository(repo))
+    )
+      throw new Error("Invalid GitHub response");
+    const featuredRepos = FEATURED_REPOSITORIES.map((name) =>
+      repositories.find((repo) => repo.name === name),
+    )
+      .filter(Boolean)
+      .map((repo) => ({
+        name: repo.name,
+        description:
+          typeof repo.description === "string"
+            ? repo.description
+            : "Public repository",
+        stars: repo.stargazers_count,
+        forks: repo.forks_count,
+        language:
+          typeof repo.language === "string" ? repo.language : "Open source",
+        updated: repo.pushed_at,
+        url: repo.html_url,
+        homepage:
+          typeof repo.homepage === "string" &&
+          /^https?:\/\//.test(repo.homepage)
+            ? repo.homepage
+            : "",
+      }));
+    return {
+      profile: {
+        name: typeof profile.name === "string" ? profile.name : "Piyush Rajan",
+        avatar:
+          typeof profile.avatar_url === "string" ? profile.avatar_url : "",
+        bio: typeof profile.bio === "string" ? profile.bio : "",
+        publicRepos: profile.public_repos,
+        followers: profile.followers,
+      },
+      featuredRepos,
+    };
+  }
+  async function fetchGithubJson(url) {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 7000);
     try {
-      const cacheKey = "piyush-github-signal";
-      const cached = sessionStorage.getItem(cacheKey);
-      if (cached) {
-        const saved = JSON.parse(cached);
-        if (Date.now() - saved.timestamp < 600000)
-          return renderGithub(saved.data);
-      }
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 7000);
-      const response = await fetch(
-        "https://api.github.com/users/PiyushRajan2007",
-        {
-          signal: controller.signal,
-          headers: { Accept: "application/vnd.github+json" },
-        },
-      );
-      if (!response.ok) throw new Error("GitHub unavailable");
-      const profile = await response.json();
-      document.querySelector("#github-status").textContent =
-        "Public signal connected";
-      document.querySelector("#github-repo-count").textContent =
-        profile.public_repos;
-      document.querySelector("#github-followers").textContent =
-        profile.followers;
-      const reposResponse = await fetch(
-        "https://api.github.com/users/PiyushRajan2007/repos?sort=updated&per_page=3",
-        {
-          signal: controller.signal,
-          headers: { Accept: "application/vnd.github+json" },
-        },
-      );
+      const response = await fetch(url, {
+        signal: controller.signal,
+        headers: { Accept: "application/vnd.github+json" },
+      });
+      if (!response.ok) throw new Error(`GitHub ${response.status}`);
+      return await response.json();
+    } finally {
       clearTimeout(timeout);
-      if (!reposResponse.ok) throw new Error("Repositories unavailable");
-      const repos = await reposResponse.json();
-      const data = { profile, repos };
-      sessionStorage.setItem(
-        cacheKey,
-        JSON.stringify({ timestamp: Date.now(), data }),
-      );
-      renderGithub(data);
-    } catch (error) {
-      document.querySelector("#github-status").textContent =
-        "Using curated signal";
     }
   }
-  function renderGithub({ profile, repos }) {
+  async function initGithub() {
+    if (githubRequest) return githubRequest;
+    githubRequest = (async () => {
+      try {
+        const cached = sessionStorage.getItem(GITHUB_CACHE_KEY);
+        if (cached) {
+          const saved = JSON.parse(cached);
+          if (Date.now() - saved.timestamp < 600000)
+            return renderGithub(saved.data);
+        }
+        const profile = await fetchGithubJson(
+          "https://api.github.com/users/PiyushRajan2007",
+        );
+        const repositories = await fetchGithubJson(
+          "https://api.github.com/users/PiyushRajan2007/repos?per_page=100&type=owner&sort=pushed",
+        );
+        const data = normalizeGithubData(profile, repositories);
+        sessionStorage.setItem(
+          GITHUB_CACHE_KEY,
+          JSON.stringify({ timestamp: Date.now(), data }),
+        );
+        renderGithub(data);
+      } catch (error) {
+        renderGithubFallback();
+      }
+    })();
+    return githubRequest;
+  }
+  function renderGithub({ profile, featuredRepos }) {
     document.querySelector("#github-status").textContent =
       "Public signal connected";
+    document.querySelector("#github-status").setAttribute("role", "status");
     document.querySelector("#github-repo-count").textContent =
-      profile.public_repos;
+      profile.publicRepos;
     document.querySelector("#github-followers").textContent = profile.followers;
-    document.querySelector("#github-stars").textContent = repos.reduce(
-      (total, repo) => total + repo.stargazers_count,
+    document.querySelector("#github-stars").textContent = featuredRepos.reduce(
+      (total, repo) => total + repo.stars,
       0,
     );
     document.querySelector("#github-updated").textContent = "Live";
-    document.querySelector("#github-repositories").innerHTML = repos
-      .map(
-        (repo, index) =>
-          `<a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"><span>${String(index + 1).padStart(2, "0")}</span><div><strong>${repo.name}</strong><small>${repo.language || "Open source"} / ${repo.description || "Public repository"}</small></div><b>${repo.stargazers_count} ★</b></a>`,
-      )
-      .join("");
+    document.querySelector(".github-stats").setAttribute("aria-busy", "false");
+    const list = document.querySelector("#github-repositories");
+    list.innerHTML = featuredRepos.length
+      ? featuredRepos
+          .map(
+            (repo, index) =>
+              `<a href="${escapeHtml(repo.url)}" target="_blank" rel="noopener noreferrer"><span>${String(index + 1).padStart(2, "0")}</span><div><strong>${escapeHtml(repo.name)}</strong><small>${escapeHtml(repo.language)} / ${escapeHtml(repo.description)} · ${repo.forks} forks · pushed ${escapeHtml(formatDate(repo.updated))}</small></div><b>${repo.stars} ★</b></a>`,
+          )
+          .join("")
+      : `<article><span>--</span><div><strong>No featured repositories found</strong><small>The public account has no configured featured matches.</small></div><b>—</b></article>`;
+  }
+  function renderGithubFallback() {
+    document.querySelector("#github-status").textContent =
+      "Using curated signal";
+    document.querySelector("#github-status").setAttribute("role", "status");
+    document.querySelector("#github-repo-count").textContent = "—";
+    document.querySelector("#github-stars").textContent = "—";
+    document.querySelector("#github-followers").textContent = "—";
+    document.querySelector("#github-updated").textContent = "Offline";
+    document.querySelector(".github-stats").setAttribute("aria-busy", "false");
+  }
+  function escapeHtml(value) {
+    return String(value).replace(
+      /[&<>"]/g,
+      (character) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[character],
+    );
+  }
+  function formatDate(value) {
+    const date = new Date(value);
+    return Number.isNaN(date.getTime())
+      ? "unknown"
+      : new Intl.DateTimeFormat("en", {
+          month: "short",
+          year: "numeric",
+        }).format(date);
   }
   function initAssistant() {
     const toggle = document.querySelector(".assistant-toggle");
