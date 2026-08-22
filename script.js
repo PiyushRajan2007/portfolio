@@ -4,6 +4,20 @@
   ).matches;
   const canvas = document.querySelector("#scene-canvas");
   let githubRequest;
+  let leetcodeRequest;
+
+  const VERIFIED_LEETCODE_FALLBACK = {
+    problemsSolved: 304,
+    easy: 117,
+    medium: 140,
+    hard: 47,
+    badges: 5,
+    yearlySubmissions: 568,
+    activeDays: 151,
+    maxStreak: 105,
+    profileUrl: "https://leetcode.com/u/PiyushRajan2007/",
+    updatedAt: "2026-08-22T00:00:00Z",
+  };
 
   function initScene() {
     if (!canvas) return;
@@ -229,7 +243,8 @@
     });
   }
   function initProjectControls() {
-    const projects = document.querySelectorAll(".project-row");
+    const projects = document.querySelectorAll(".project-card");
+    const emptyState = document.querySelector(".project-empty");
     document.querySelectorAll(".filter-button").forEach((button) =>
       button.addEventListener("click", () => {
         document
@@ -240,9 +255,14 @@
         projects.forEach((project) =>
           project.classList.toggle(
             "is-hidden",
-            filter !== "all" && project.dataset.category !== filter,
+            filter !== "all" &&
+              !project.dataset.category.split(" ").includes(filter),
           ),
         );
+        if (emptyState)
+          emptyState.hidden = [...projects].some(
+            (project) => !project.classList.contains("is-hidden"),
+          );
       }),
     );
     const dialog = document.querySelector(".project-dialog");
@@ -259,11 +279,6 @@
         "InfluenceIQ",
         "A creator authenticity and campaign management platform that makes influencer selection measurable, with discovery, scoring, dashboards, and a verification-first payment flow.",
         ["React", "Next.js", "Charts"],
-      ],
-      records: [
-        "Student Record System",
-        "A persistent C++ CRUD engine designed around dependable file I/O, object-oriented structure, and zero-loss record management.",
-        ["C++", "File I/O", "OOP"],
       ],
     };
     let activeProject;
@@ -528,6 +543,83 @@
       }),
     );
   }
+  function isValidLeetcodeData(data) {
+    const metricKeys = [
+      "problemsSolved",
+      "easy",
+      "medium",
+      "hard",
+      "badges",
+      "yearlySubmissions",
+      "activeDays",
+      "maxStreak",
+    ];
+    if (!data || typeof data !== "object") return false;
+    const allowedKeys = [...metricKeys, "profileUrl", "updatedAt"];
+    if (Object.keys(data).some((key) => !allowedKeys.includes(key)))
+      return false;
+    if (
+      !metricKeys.every((key) => Number.isInteger(data[key]) && data[key] >= 0)
+    )
+      return false;
+    if (data.easy + data.medium + data.hard !== data.problemsSolved)
+      return false;
+    if (
+      typeof data.profileUrl !== "string" ||
+      data.profileUrl !== VERIFIED_LEETCODE_FALLBACK.profileUrl
+    )
+      return false;
+    return (
+      typeof data.updatedAt === "string" &&
+      !Number.isNaN(Date.parse(data.updatedAt))
+    );
+  }
+  function renderLeetcode(data, status) {
+    const fields = {
+      solved: "problemsSolved",
+      easy: "easy",
+      medium: "medium",
+      hard: "hard",
+      badges: "badges",
+      yearly: "yearlySubmissions",
+      active: "activeDays",
+      streak: "maxStreak",
+    };
+    Object.entries(fields).forEach(([element, key]) => {
+      document.querySelector(`#leetcode-${element}`).textContent =
+        data[key].toLocaleString("en-IN");
+    });
+    document.querySelector("#leetcode-signal-solved").textContent =
+      data.problemsSolved.toLocaleString("en-IN");
+    document.querySelector("#leetcode-project-solved").textContent =
+      data.problemsSolved.toLocaleString("en-IN");
+    document.querySelector("#leetcode-status").textContent = status;
+    document
+      .querySelector(".leetcode-metrics")
+      .setAttribute("aria-busy", "false");
+  }
+  function initLeetcode() {
+    if (leetcodeRequest) return leetcodeRequest;
+    leetcodeRequest = fetch("data/leetcode.json", {
+      headers: { Accept: "application/json" },
+    })
+      .then((response) => {
+        if (!response.ok) throw new Error(`LeetCode data ${response.status}`);
+        return response.json();
+      })
+      .then((data) => {
+        if (!isValidLeetcodeData(data))
+          throw new Error("Invalid local LeetCode data");
+        renderLeetcode(data, "Verified stats / local snapshot");
+      })
+      .catch(() =>
+        renderLeetcode(
+          VERIFIED_LEETCODE_FALLBACK,
+          "Verified fallback / local snapshot",
+        ),
+      );
+    return leetcodeRequest;
+  }
   initScene();
   initMotion();
   initMenu();
@@ -535,4 +627,5 @@
   initSkills();
   initGithub();
   initAssistant();
+  initLeetcode();
 })();

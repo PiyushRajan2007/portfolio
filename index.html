@@ -97,7 +97,7 @@
             ><span class="signal-label">CGPA / 10</span>
           </div>
           <div>
-            <span class="signal-value">100+</span
+            <span class="signal-value" id="leetcode-signal-solved">—</span
             ><span class="signal-label">LeetCode problems</span>
           </div>
           <div>
@@ -169,38 +169,53 @@
       </section>
       <section id="work" class="section-shell editorial-section work-section">
         <div class="section-kicker">
-          <span>03 — Selected work</span
-          ><span>Systems with a point of view</span>
+          <span>03 — Featured projects</span
+          ><span>Selected systems / live thinking</span>
         </div>
         <div class="work-heading">
-          <h2>Things I’ve<br /><span>made real.</span></h2>
+          <h2>Ideas with<br /><span>an engine.</span></h2>
           <p>
-            From multi-agent intelligence to creator infrastructure, these are
-            experiments built under real constraints, with a bias toward useful
-            outcomes.
+            Two focused builds where AI, product reasoning, and full-stack
+            engineering meet. Open a card for the system behind the surface.
           </p>
         </div>
-        <div class="project-filter" role="group" aria-label="Filter projects">
-          <button class="filter-button is-active" data-filter="all">
-            All work
-          </button>
-          <button class="filter-button" data-filter="ai">AI / ML</button>
-          <button class="filter-button" data-filter="fullstack">
-            Full stack
-          </button>
-          <button class="filter-button" data-filter="core">Core systems</button>
+        <div class="project-stats" aria-label="Featured project facts">
+          <div><b>02</b><span>Featured projects</span></div>
+          <div><b>03</b><span>Specialized AI agents</span></div>
+          <div>
+            <b id="leetcode-project-solved">—</b
+            ><span>DSA problems solved</span>
+          </div>
+        </div>
+        <div
+          class="project-filter"
+          role="group"
+          aria-label="Filter featured projects"
+        >
+          <span class="filter-label">Filter /</span
+          ><button class="filter-button is-active" data-filter="all">All</button
+          ><button class="filter-button" data-filter="ai">AI / ML</button
+          ><button class="filter-button" data-filter="fullstack">
+            Full stack</button
+          ><button class="filter-button" data-filter="webapps">Web apps</button
+          ><button class="filter-button" data-filter="tools">Tools</button
+          ><button class="filter-button" data-filter="systems">Systems</button>
         </div>
         <div class="project-list">
           <article
-            class="project-row featured"
+            class="project-card featured"
             role="button"
             tabindex="0"
             aria-label="Open AI Co-Founder Platform case study"
-            data-category="ai"
+            data-category="ai tools"
             data-project="cofounder"
           >
-            <div class="project-number">01</div>
-            <div class="project-main">
+            <div class="project-visual project-visual-ai">
+              <span class="visual-kicker">AI / 03 AGENTS</span>
+              <div class="agent-orbit"><i></i><i></i><i></i><b>CORE</b></div>
+              <span class="visual-footer">RAG / DECISION LAYER</span>
+            </div>
+            <div class="project-card-body">
               <div class="project-meta">
                 <span>GenAI / SaaS</span><span>In development</span>
               </div>
@@ -215,19 +230,23 @@
                 <span>GPT-4</span><span>RAG</span><span>Multi-agent</span
                 ><span>Vector DB</span>
               </div>
+              <div class="project-card-cta">Open case study <span>↗</span></div>
             </div>
-            <div class="project-arrow">↗</div>
           </article>
           <article
-            class="project-row"
+            class="project-card"
             role="button"
             tabindex="0"
             aria-label="Open InfluenceIQ case study"
-            data-category="fullstack"
+            data-category="fullstack webapps"
             data-project="influenceiq"
           >
-            <div class="project-number">02</div>
-            <div class="project-main">
+            <div class="project-visual project-visual-iq">
+              <span class="visual-kicker">FULL STACK / 94.2%</span>
+              <div class="iq-bars"><i></i><i></i><i></i><i></i><i></i></div>
+              <span class="visual-footer">AUTHENTICITY / SIGNAL MAP</span>
+            </div>
+            <div class="project-card-body">
               <div class="project-meta">
                 <span>Full-stack / Hackathon</span><span>Case study</span>
               </div>
@@ -240,33 +259,12 @@
                 <span>React</span><span>Next.js</span><span>Charts</span
                 ><span>Blockchain</span>
               </div>
+              <div class="project-card-cta">Open case study <span>↗</span></div>
             </div>
-            <div class="project-arrow">↗</div>
           </article>
-          <article
-            class="project-row"
-            role="button"
-            tabindex="0"
-            aria-label="Open Student Record System case study"
-            data-category="core"
-            data-project="records"
-          >
-            <div class="project-number">03</div>
-            <div class="project-main">
-              <div class="project-meta">
-                <span>C++ / Core systems</span><span>Shipped</span>
-              </div>
-              <h3>Student Record System</h3>
-              <p>
-                A persistent CRUD engine for 1,000+ records, built to make file
-                I/O and object-oriented architecture feel dependable.
-              </p>
-              <div class="tag-row">
-                <span>C++</span><span>File I/O</span><span>OOP</span>
-              </div>
-            </div>
-            <div class="project-arrow">↗</div>
-          </article>
+        </div>
+        <div class="project-empty" aria-live="polite" hidden>
+          No featured projects in this layer yet.
         </div>
       </section>
       <section
@@ -415,17 +413,48 @@
           ><span>Public profile / no scraping</span>
         </div>
         <div class="leetcode-card">
-          <div>
+          <div class="leetcode-heading">
             <span class="eyebrow">Algorithmic foundation</span>
-            <h2>100+ problems.<br /><span>Still warming up.</span></h2>
+            <h2>Problems solved.<br /><span>Measured honestly.</span></h2>
+            <p id="leetcode-status" role="status" aria-live="polite">
+              Loading verified stats...
+            </p>
           </div>
-          <div class="leetcode-metric">
-            <b>100+</b><span>Problems solved<br />in C++ / DSA</span
-            ><a
+          <div
+            class="leetcode-metrics"
+            aria-label="LeetCode statistics"
+            aria-busy="true"
+          >
+            <div class="leetcode-metric">
+              <b id="leetcode-solved">—</b><span>Problems solved</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-easy">—</b><span>Easy</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-medium">—</b><span>Medium</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-hard">—</b><span>Hard</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-badges">—</b><span>Badges</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-yearly">—</b><span>Yearly submissions</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-active">—</b><span>Active days</span>
+            </div>
+            <div class="leetcode-metric">
+              <b id="leetcode-streak">—</b><span>Max streak</span>
+            </div>
+            <a
+              class="leetcode-profile-link"
               href="https://leetcode.com/u/PiyushRajan2007/"
               target="_blank"
               rel="noopener noreferrer"
-              >Open public profile ↗</a
+              >Open LeetCode profile ↗</a
             >
           </div>
         </div>
