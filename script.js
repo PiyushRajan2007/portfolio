@@ -1,362 +1,442 @@
-/**
- * Premium Developer Portfolio Interactivity
- * Author: Piyush Rajan
- * Features: Canvas Particles, Interactive Mouse-Tracking glows, Scroll reveals, Typewriter cycles, Theme management
- */
+(() => {
+  const reduceMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  const canvas = document.querySelector("#scene-canvas");
 
-document.addEventListener('DOMContentLoaded', () => {
-    initThemeToggle();
-    initMobileNav();
-    initHeaderScroll();
-    initCanvasParticles();
-    initTypewriter();
-    initScrollReveal();
-    initCardGlows();
-    initScrollspy();
-});
-
-/* ==========================================================================
-   1. Theme Management (Dual Dark Accents)
-   ========================================================================== */
-function initThemeToggle() {
-    const themeToggle = document.getElementById('themeToggle');
-    const html = document.documentElement;
-
-    // Default to 'cyber-dark' (default class in HTML) or saved theme
-    const savedTheme = localStorage.getItem('portfolio-theme') || 'cyber';
-    
-    if (savedTheme === 'space') {
-        html.classList.add('obsidian-space');
-        themeToggle.textContent = '☀️';
-    } else {
-        html.classList.remove('obsidian-space');
-        themeToggle.textContent = '🌙';
-    }
-
-    themeToggle.addEventListener('click', () => {
-        html.classList.toggle('obsidian-space');
-        const isSpace = html.classList.contains('obsidian-space');
-        
-        localStorage.setItem('portfolio-theme', isSpace ? 'space' : 'cyber');
-        themeToggle.textContent = isSpace ? '☀️' : '🌙';
-
-        // Animate toggle click
-        themeToggle.style.transform = 'scale(0.85) rotate(45deg)';
-        setTimeout(() => {
-            themeToggle.style.transform = '';
-        }, 150);
-    });
-}
-
-/* ==========================================================================
-   2. Mobile Drawer Navigation
-   ========================================================================== */
-function initMobileNav() {
-    const navToggle = document.querySelector('.mobile-nav-toggle');
-    const navDropdown = document.querySelector('.mobile-nav-dropdown');
-    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-
-    if (!navToggle || !navDropdown) return;
-
-    function toggleMenu() {
-        navToggle.classList.toggle('open');
-        navDropdown.classList.toggle('open');
-        document.body.style.overflow = navDropdown.classList.contains('open') ? 'hidden' : '';
-    }
-
-    navToggle.addEventListener('click', toggleMenu);
-
-    mobileLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            // Close drawer on click
-            navToggle.classList.remove('open');
-            navDropdown.classList.remove('open');
-            document.body.style.overflow = '';
-        });
-    });
-}
-
-/* ==========================================================================
-   3. Header Scroll Effect
-   ========================================================================== */
-function initHeaderScroll() {
-    const header = document.querySelector('header');
-    
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 40) {
-            header.classList.add('scrolled');
-        } else {
-            header.classList.remove('scrolled');
-        }
-    });
-}
-
-/* ==========================================================================
-   4. High Performance Canvas Particles Background
-   ========================================================================== */
-function initCanvasParticles() {
-    const canvas = document.getElementById('particles-canvas');
+  function initScene() {
     if (!canvas) return;
+    const probe = document.createElement("canvas");
+    const webglAvailable = Boolean(
+      probe.getContext("webgl") || probe.getContext("experimental-webgl"),
+    );
+    if (!window.THREE || !webglAvailable) {
+      const context = canvas.getContext("2d");
+      if (!context) return;
+      const points = Array.from({ length: 70 }, () => ({
+        x: Math.random(),
+        y: Math.random(),
+        speed: 0.0002 + Math.random() * 0.0004,
+      }));
+      let width = 0;
+      let height = 0;
+      let fallbackFrame;
+      let fallbackRunning = !document.hidden && !reduceMotion;
+      function fallback(time) {
+        const rect = canvas.getBoundingClientRect();
+        if (width !== rect.width || height !== rect.height) {
+          width = rect.width;
+          height = rect.height;
+          canvas.width = width * 2;
+          canvas.height = height * 2;
+        }
+        context.setTransform(2, 0, 0, 2, 0, 0);
+        context.clearRect(0, 0, width, height);
+        context.strokeStyle = "rgba(216,243,107,.2)";
+        context.lineWidth = 1;
+        context.beginPath();
+        points.forEach((point, index) => {
+          point.y = (point.y + point.speed) % 1;
+          const x = point.x * width;
+          const y = point.y * height;
+          context.moveTo(x - 3, y);
+          context.lineTo(x + 3, y);
+          if (index) {
+            const previous = points[index - 1];
+            context.moveTo(x, y);
+            context.lineTo(previous.x * width, previous.y * height);
+          }
+        });
+        context.stroke();
+        context.strokeStyle = "#d8f36b";
+        context.beginPath();
+        context.arc(
+          width / 2,
+          height / 2,
+          Math.min(width, height) * 0.23,
+          0,
+          Math.PI * 2,
+        );
+        context.stroke();
+        if (fallbackRunning) fallbackFrame = requestAnimationFrame(fallback);
+      }
+      if (reduceMotion) fallback(0);
+      else fallbackFrame = requestAnimationFrame(fallback);
+      document.addEventListener("visibilitychange", () => {
+        fallbackRunning = !document.hidden && !reduceMotion;
+        if (fallbackRunning && !fallbackFrame)
+          fallbackFrame = requestAnimationFrame(fallback);
+        if (!fallbackRunning && fallbackFrame) {
+          cancelAnimationFrame(fallbackFrame);
+          fallbackFrame = 0;
+        }
+      });
+      return;
+    }
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+    camera.position.z = 5.2;
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      alpha: true,
+      antialias: true,
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    const group = new THREE.Group();
+    scene.add(group);
+    const core = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.2, 2),
+      new THREE.MeshBasicMaterial({
+        color: 0xd8f36b,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.8,
+      }),
+    );
+    group.add(core);
+    const shell = new THREE.Mesh(
+      new THREE.IcosahedronGeometry(1.75, 1),
+      new THREE.MeshBasicMaterial({
+        color: 0x52705b,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.24,
+      }),
+    );
+    shell.rotation.set(0.3, 0.2, 0.1);
+    group.add(shell);
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.72, 0.012, 8, 100),
+      new THREE.MeshBasicMaterial({
+        color: 0xff6b3d,
+        transparent: true,
+        opacity: 0.8,
+      }),
+    );
+    ring.rotation.set(1.1, 0.4, 0.2);
+    group.add(ring);
+    const stars = new THREE.BufferGeometry();
+    const points = [];
+    for (let i = 0; i < 180; i += 1)
+      points.push(
+        (Math.random() - 0.5) * 8,
+        (Math.random() - 0.5) * 8,
+        (Math.random() - 0.5) * 4,
+      );
+    stars.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+    group.add(
+      new THREE.Points(
+        stars,
+        new THREE.PointsMaterial({
+          color: 0xd8f36b,
+          size: 0.018,
+          transparent: true,
+          opacity: 0.65,
+        }),
+      ),
+    );
+    const pointer = { x: 0, y: 0 };
+    canvas.addEventListener("pointermove", (event) => {
+      const rect = canvas.getBoundingClientRect();
+      pointer.x = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
+      pointer.y = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
+    });
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      renderer.setSize(rect.width, rect.height, false);
+      camera.aspect = rect.width / rect.height;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener("resize", resize);
+    resize();
+    let frameId;
+    let running = !document.hidden && !reduceMotion;
+    function render(time) {
+      if (!running) return;
+      const seconds = time * 0.00035;
+      group.rotation.y = seconds + pointer.x * 0.18;
+      group.rotation.x = pointer.y * 0.12;
+      core.rotation.z = seconds * 1.5;
+      ring.rotation.z = seconds * 1.8;
+      renderer.render(scene, camera);
+      frameId = requestAnimationFrame(render);
+    }
+    if (reduceMotion) renderer.render(scene, camera);
+    else frameId = requestAnimationFrame(render);
+    document.addEventListener("visibilitychange", () => {
+      running = !document.hidden && !reduceMotion;
+      if (running && !frameId) frameId = requestAnimationFrame(render);
+      if (!running && frameId) {
+        cancelAnimationFrame(frameId);
+        frameId = 0;
+      }
+    });
+  }
 
-    const ctx = canvas.getContext('2d');
-    let particlesArray = [];
-    let animationFrameId;
+  function initMotion() {
+    const revealItems = document.querySelectorAll(".reveal");
+    if (reduceMotion) {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) =>
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        }),
+      { threshold: 0.14 },
+    );
+    revealItems.forEach((item) => observer.observe(item));
+    if (window.Lenis) {
+      const lenis = new Lenis({ lerp: 0.08, smoothWheel: true });
+      function raf(time) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+    if (window.gsap)
+      gsap.from(".site-header", {
+        y: -30,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+  }
 
-    // Mouse coordinates track
-    const mouse = {
-        x: null,
-        y: null,
-        radius: 120
+  function initMenu() {
+    const button = document.querySelector(".menu-button");
+    const nav = document.querySelector(".site-header nav");
+    if (!button) return;
+    const closeMenu = () => {
+      button.setAttribute("aria-expanded", "false");
+      button.closest(".site-header")?.classList.remove("mobile-open");
     };
-
-    window.addEventListener('mousemove', (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+    button.addEventListener("click", () => {
+      const open = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!open));
+      button.closest(".site-header")?.classList.toggle("mobile-open", !open);
     });
-
-    window.addEventListener('mouseleave', () => {
-        mouse.x = null;
-        mouse.y = null;
+    nav
+      .querySelectorAll("a")
+      .forEach((link) => link.addEventListener("click", closeMenu));
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeMenu();
     });
-
-    // Resize handling
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        initParticles();
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    // Particle Blueprints
-    class Particle {
-        constructor(x, y, directionX, directionY, size, color) {
-            this.x = x;
-            this.y = y;
-            this.directionX = directionX;
-            this.directionY = directionY;
-            this.size = size;
-            this.color = color;
+  }
+  function initProjectControls() {
+    const projects = document.querySelectorAll(".project-row");
+    document.querySelectorAll(".filter-button").forEach((button) =>
+      button.addEventListener("click", () => {
+        document
+          .querySelectorAll(".filter-button")
+          .forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        const filter = button.dataset.filter;
+        projects.forEach((project) =>
+          project.classList.toggle(
+            "is-hidden",
+            filter !== "all" && project.dataset.category !== filter,
+          ),
+        );
+      }),
+    );
+    const dialog = document.querySelector(".project-dialog");
+    const title = document.querySelector("#dialog-title");
+    const copy = document.querySelector("#dialog-copy");
+    const tags = document.querySelector("#dialog-tags");
+    const details = {
+      cofounder: [
+        "AI Co-Founder Platform",
+        "A multi-agent product system with Technical, Business, and Market agents, RAG pipelines, and a clear focus on helping founders make better decisions faster.",
+        ["GPT-4", "RAG", "Multi-agent"],
+      ],
+      influenceiq: [
+        "InfluenceIQ",
+        "A creator authenticity and campaign management platform that makes influencer selection measurable, with discovery, scoring, dashboards, and a verification-first payment flow.",
+        ["React", "Next.js", "Charts"],
+      ],
+      records: [
+        "Student Record System",
+        "A persistent C++ CRUD engine designed around dependable file I/O, object-oriented structure, and zero-loss record management.",
+        ["C++", "File I/O", "OOP"],
+      ],
+    };
+    let activeProject;
+    const openProject = (project) => {
+      const item = details[project.dataset.project];
+      if (!item || !dialog) return;
+      activeProject = project;
+      title.textContent = item[0];
+      copy.textContent = item[1];
+      tags.innerHTML = item[2].map((tag) => `<span>${tag}</span>`).join("");
+      dialog.showModal();
+      dialog.querySelector(".dialog-close")?.focus();
+    };
+    projects.forEach((project) => {
+      project.addEventListener("click", () => openProject(project));
+      project.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openProject(project);
         }
-
-        // Draw particle
-        draw() {
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-            ctx.fillStyle = this.color;
-            ctx.fill();
-        }
-
-        // Update movement
-        update() {
-            // Screen boundaries wrap/bounce
-            if (this.x > canvas.width || this.x < 0) {
-                this.directionX = -this.directionX;
-            }
-            if (this.y > canvas.height || this.y < 0) {
-                this.directionY = -this.directionY;
-            }
-
-            // Move particle
-            this.x += this.directionX;
-            this.y += this.directionY;
-
-            // Interactive mouse repel effect
-            if (mouse.x !== null && mouse.y !== null) {
-                let dx = this.x - mouse.x;
-                let dy = this.y - mouse.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < mouse.radius) {
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    const forceX = (dx / distance) * force * 2.5;
-                    const forceY = (dy / distance) * force * 2.5;
-
-                    this.x += forceX;
-                    this.y += forceY;
-                }
-            }
-
-            this.draw();
-        }
-    }
-
-    // Populate particles
-    function initParticles() {
-        particlesArray = [];
-        // Adaptive numbers based on viewport width
-        let numberOfParticles = Math.floor((canvas.width * canvas.height) / 16000);
-        numberOfParticles = Math.min(numberOfParticles, 85); // Cap to preserve CPU efficiency
-        numberOfParticles = Math.max(numberOfParticles, 25);
-
-        for (let i = 0; i < numberOfParticles; i++) {
-            let size = Math.random() * 2 + 1;
-            let x = Math.random() * (canvas.width - size * 2) + size;
-            let y = Math.random() * (canvas.height - size * 2) + size;
-            let directionX = (Math.random() * 0.4) - 0.2;
-            let directionY = (Math.random() * 0.4) - 0.2;
-            
-            // Randomize between cyan-ish and purple-ish node colors
-            let color = Math.random() > 0.5 ? 'rgba(0, 212, 255, 0.25)' : 'rgba(179, 0, 255, 0.25)';
-            
-            particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-        }
-    }
-
-    // Connect node lines
-    function connectLines() {
-        let maxDistance = 140;
-        for (let a = 0; a < particlesArray.length; a++) {
-            for (let b = a; b < particlesArray.length; b++) {
-                let dx = particlesArray[a].x - particlesArray[b].x;
-                let dy = particlesArray[a].y - particlesArray[b].y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < maxDistance) {
-                    // Compute line opacity based on connection distance
-                    let opacity = (1 - (distance / maxDistance)) * 0.12;
-                    ctx.strokeStyle = `rgba(0, 212, 255, ${opacity})`;
-                    ctx.lineWidth = 0.8;
-                    ctx.beginPath();
-                    ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-                    ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-                    ctx.stroke();
-                }
-            }
-        }
-    }
-
-    // Render loop
-    function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < particlesArray.length; i++) {
-            particlesArray[i].update();
-        }
-        connectLines();
-        animationFrameId = requestAnimationFrame(animate);
-    }
-
-    animate();
-}
-
-/* ==========================================================================
-   5. Interactive Subtitle Typewriter Effect
-   ========================================================================== */
-function initTypewriter() {
-    const textElement = document.getElementById('typewriter-text');
-    if (!textElement) return;
-
-    const words = JSON.parse(textElement.getAttribute('data-words'));
-    let wordIndex = 0;
-    let charIndex = 0;
-    let isDeleting = false;
-    let currentWord = '';
-    let typeSpeed = 100;
-
-    function type() {
-        const fullWord = words[wordIndex];
-
-        if (isDeleting) {
-            currentWord = fullWord.substring(0, charIndex - 1);
-            charIndex--;
-            typeSpeed = 40; // Deletes faster than types
-        } else {
-            currentWord = fullWord.substring(0, charIndex + 1);
-            charIndex++;
-            typeSpeed = 100;
-        }
-
-        textElement.textContent = currentWord;
-
-        // Typwriting pauses & switches
-        if (!isDeleting && charIndex === fullWord.length) {
-            isDeleting = true;
-            typeSpeed = 2000; // Hold word complete state
-        } else if (isDeleting && charIndex === 0) {
-            isDeleting = false;
-            wordIndex = (wordIndex + 1) % words.length; // Rotate words
-            typeSpeed = 500; // Pause before typing next word
-        }
-
-        setTimeout(type, typeSpeed);
-    }
-
-    // Start cycle
-    setTimeout(type, 1000);
-}
-
-/* ==========================================================================
-   6. Scroll Reveal Observer (IntersectionObserver)
-   ========================================================================== */
-function initScrollReveal() {
-    const revealElements = document.querySelectorAll('.reveal');
-    
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Animate once
-            }
-        });
-    }, {
-        threshold: 0.12, // Reveal when 12% is in view
-        rootMargin: '0px 0px -50px 0px'
+      });
     });
-
-    revealElements.forEach(el => revealObserver.observe(el));
-}
-
-/* ==========================================================================
-   7. Card cursor coordinate trackers (Premium halo borders)
-   ========================================================================== */
-function initCardGlows() {
-    const glowElements = document.querySelectorAll('.glow-element');
-
-    glowElements.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            // Get coordinates relative to the card's dimensions
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            card.style.setProperty('--mouse-x', `${x}px`);
-            card.style.setProperty('--mouse-y', `${y}px`);
-        });
+    document.querySelector(".dialog-close")?.addEventListener("click", () => {
+      dialog.close();
+      activeProject?.focus();
     });
-}
-
-/* ==========================================================================
-   8. Scrollspy Nav Highlights
-   ========================================================================== */
-function initScrollspy() {
-    const sections = document.querySelectorAll('section');
-    const navLinks = document.querySelectorAll('.nav-link');
-    const mobileLinks = document.querySelectorAll('.mobile-nav-link');
-
-    window.addEventListener('scroll', () => {
-        let currentSectionId = '';
-        
-        // Find current section in view
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            
-            // Focus trigger point (offset by header height)
-            if (window.scrollY >= sectionTop - 120) {
-                currentSectionId = section.getAttribute('id');
-            }
-        });
-
-        // Set active class
-        function highlightLink(links) {
-            links.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${currentSectionId}`) {
-                    link.classList.add('active');
-                }
-            });
-        }
-
-        highlightLink(navLinks);
-        highlightLink(mobileLinks);
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
     });
-}
+    dialog?.addEventListener("close", () => activeProject?.focus());
+    dialog?.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        dialog.close();
+      }
+    });
+  }
+  function initSkills() {
+    const copy = document.querySelector("[data-skill-copy]");
+    const content = {
+      build: [
+        "BUILD / 01",
+        "Full-stack systems with an intelligent edge.",
+        "React, Next.js, Node, Express, PostgreSQL, Supabase, REST APIs, and the practical layer between a strong interface and dependable data.",
+      ],
+      think: [
+        "THINK / 02",
+        "From raw question to useful model.",
+        "DSA in C/C++, product reasoning, RAG pipelines, multi-agent architecture, and the habit of reducing a big problem to its clearest next decision.",
+      ],
+      ship: [
+        "SHIP / 03",
+        "Make it real. Make it last.",
+        "Git, GitHub, Vercel, CI/CD fundamentals, responsive interfaces, performance-minded animation, and a bias toward small deployable loops.",
+      ],
+    };
+    document.querySelectorAll(".skill-tab").forEach((button) =>
+      button.addEventListener("click", () => {
+        document
+          .querySelectorAll(".skill-tab")
+          .forEach((item) => item.classList.remove("is-active"));
+        button.classList.add("is-active");
+        const item = content[button.dataset.skill];
+        copy.innerHTML = `<span>${item[0]}</span><h3>${item[1]}</h3><p>${item[2]}</p>`;
+      }),
+    );
+  }
+  async function initGithub() {
+    try {
+      const cacheKey = "piyush-github-signal";
+      const cached = sessionStorage.getItem(cacheKey);
+      if (cached) {
+        const saved = JSON.parse(cached);
+        if (Date.now() - saved.timestamp < 600000)
+          return renderGithub(saved.data);
+      }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 7000);
+      const response = await fetch(
+        "https://api.github.com/users/PiyushRajan2007",
+        {
+          signal: controller.signal,
+          headers: { Accept: "application/vnd.github+json" },
+        },
+      );
+      if (!response.ok) throw new Error("GitHub unavailable");
+      const profile = await response.json();
+      document.querySelector("#github-status").textContent =
+        "Public signal connected";
+      document.querySelector("#github-repo-count").textContent =
+        profile.public_repos;
+      document.querySelector("#github-followers").textContent =
+        profile.followers;
+      const reposResponse = await fetch(
+        "https://api.github.com/users/PiyushRajan2007/repos?sort=updated&per_page=3",
+        {
+          signal: controller.signal,
+          headers: { Accept: "application/vnd.github+json" },
+        },
+      );
+      clearTimeout(timeout);
+      if (!reposResponse.ok) throw new Error("Repositories unavailable");
+      const repos = await reposResponse.json();
+      const data = { profile, repos };
+      sessionStorage.setItem(
+        cacheKey,
+        JSON.stringify({ timestamp: Date.now(), data }),
+      );
+      renderGithub(data);
+    } catch (error) {
+      document.querySelector("#github-status").textContent =
+        "Using curated signal";
+    }
+  }
+  function renderGithub({ profile, repos }) {
+    document.querySelector("#github-status").textContent =
+      "Public signal connected";
+    document.querySelector("#github-repo-count").textContent =
+      profile.public_repos;
+    document.querySelector("#github-followers").textContent = profile.followers;
+    document.querySelector("#github-stars").textContent = repos.reduce(
+      (total, repo) => total + repo.stargazers_count,
+      0,
+    );
+    document.querySelector("#github-updated").textContent = "Live";
+    document.querySelector("#github-repositories").innerHTML = repos
+      .map(
+        (repo, index) =>
+          `<a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"><span>${String(index + 1).padStart(2, "0")}</span><div><strong>${repo.name}</strong><small>${repo.language || "Open source"} / ${repo.description || "Public repository"}</small></div><b>${repo.stargazers_count} ★</b></a>`,
+      )
+      .join("");
+  }
+  function initAssistant() {
+    const toggle = document.querySelector(".assistant-toggle");
+    const panel = document.querySelector(".assistant-panel");
+    const answer = document.querySelector(".assistant-answer");
+    if (!toggle || !panel) return;
+    toggle.addEventListener("click", () => {
+      const open = toggle.getAttribute("aria-expanded") === "true";
+      toggle.setAttribute("aria-expanded", String(!open));
+      panel.hidden = open;
+    });
+    document
+      .querySelector(".assistant-close")
+      ?.addEventListener("click", () => {
+        toggle.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+      });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && !panel.hidden) {
+        toggle.setAttribute("aria-expanded", "false");
+        panel.hidden = true;
+        toggle.focus();
+      }
+    });
+    const answers = {
+      "What does Piyush build?":
+        "AI products, full-stack systems, and interfaces that make complex ideas feel usable.",
+      "What is Piyush's stack?":
+        "React, Next.js, Node, PostgreSQL, C++, DSA, Three.js, GSAP, and GenAI systems.",
+      "How can I contact Piyush?":
+        "Email piyushrajan2007@gmail.com for internships, collaborations, and open-source work.",
+    };
+    document.querySelectorAll("[data-question]").forEach((button) =>
+      button.addEventListener("click", () => {
+        answer.textContent = answers[button.dataset.question];
+      }),
+    );
+  }
+  initScene();
+  initMotion();
+  initMenu();
+  initProjectControls();
+  initSkills();
+  initGithub();
+  initAssistant();
+})();
